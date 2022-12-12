@@ -6,7 +6,7 @@ console.log(Matter)
 const canvas = document.getElementById('simulationCanvas');
 const canvas_container = document.getElementById('canvas-container');
 
-const txtCodigoMatricula = document.getElementById('codMatricula');
+const txtCodigoMatricula = document.getElementById('txtCodigoMatricula');
 const btnRequestLogin = document.getElementById('btnRequest');
 
 const indicator_detection = document.getElementById('LED-Detection');
@@ -181,6 +181,16 @@ function logMessage(message){
     logger.scrollTop = logger.scrollHeight;
 }
 
+function iniciarUsuario(ev){
+    console.log(txtCodigoMatricula)
+    userCode = txtCodigoMatricula.value;
+    logMessage(`Iniciando Sesion: ${userCode}`)
+    loginUser(userCode);
+}
+
+btnRequestLogin.addEventListener('click',iniciarUsuario)
+
+
 // ------------------ MQTT Comunication Code -----------------------
 
 // console.log(mqtt);
@@ -239,9 +249,9 @@ client.on('message' , (topic, message, packet) => {
         response = message.toString();
         client.publish('inicioSesion','loginValido', {qos: 0, retain: false})
         if(response==='loginValido'){
-            logger('AceptadoInicio de sesion')
+            logMessage('Aceptado Inicio de sesion')
             setTimeout(()=>{
-                logger(`enviando data: ${userCode}, ${cant_basura}`);
+                logMessage(`enviando data: ${userCode}, ${cant_basura}`);
                 cant_basura = 0;
             },30*1000)
         }
