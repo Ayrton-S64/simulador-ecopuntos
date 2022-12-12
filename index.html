@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+    <div id="app-container">
+        <div id="canvas-container">
+            <canvas id="simulationCanvas" width="800" height="600" style="background:  0% 0% / contain rgb(20, 21, 31);"></canvas>
+        </div>
+        <div id="information-container">
+            <div id="information-box">
+                <div style="text-align: center;">
+                    <h3>Simulacion sistema ECOPUNTOS</h3>
+                </div>
+                <div>
+                    <div>
+                        <label for="txtCodigoMatricula">Codigo de matricula</label>
+                        <input type="text" id="txtCodigoMatricula">
+                    </div>
+                    <div>
+                        <button id="btnRequest">
+                            INICIAR
+                        </button>
+                    </div>
+                    <div>
+                        <div>
+                            <h5>STATUS</h5>
+                        </div>
+                        <div style="display: flex; justify-content: space-around;">
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <div style="background-color: #850a0a; padding: 4px; border-radius: 70px;">
+                                    <div style="background-color: #460606; height: 45px; width: 45px; border-radius: 100%;" id="LED-Detection"></div>
+                                    <!-- <div style="background-color: #ff0000; height: 45px; width: 45px; border-radius: 100%;"></div> -->
+                                </div>
+                                <h6 style="margin-top: 7px; margin-bottom: 0px;">DETECTION</h6>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <div style="background-color: #0c570c; padding: 4px; border-radius: 70px;">
+                                    <div style="background-color: #063106; height: 45px; width: 45px; border-radius: 100%;" id="LED-Login"></div>
+                                    <!-- <div style="background-color: #00ff00; height: 45px; width: 45px; border-radius: 100%;"></div> -->
+                                </div>
+                                <h6 style="margin-top: 7px; margin-bottom: 0px;">LOGIN</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: auto;">
+                        <div style="height: 100%;">
+                            <h6 style="margin-bottom: 4px; margin-top: 0px;">DEBUG INFORMATION</h6>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; height: 100%;">
+                                <div style="height: 100%; display: grid; grid-template-rows: auto 1fr;">
+                                    <h4 style="margin: 0;">LOG</h4>
+                                    <div style="width: 100%;">
+                                        <textarea style="width: 100%; height: 100%; resize: none;" name="" readonly id="txtLog"></textarea>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: center; height: 100%;">
+                                    <h4 style="margin: 0;">CONTADOR</h4>
+                                    <div style="width: 90px; height: 110px; background-color: white; border: 3px inset #b5b5b5; box-shadow: inset #929292 1px 1px 4px 0px;">
+                                        <span id="txt-counter" style="font-size: 75px; text-align: right;">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./src/index.js"></script>
+</body>
+</html>

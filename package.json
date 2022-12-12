@@ -1,0 +1,21 @@
+{
+  "name": "trashcan-iot-simulation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "matter-js": "^0.18.0",
+    "mqtt": "^4.3.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "parcel-bundler": "^1.12.5"
+  }
+}
