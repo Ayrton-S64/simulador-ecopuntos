@@ -28,6 +28,8 @@ var timeOut_filled = null;
 
 var cant_basura = 0;
 
+var bool_loggedin = false;
+
 // module aliases
 var Engine = Matter.Engine,
     Render = Matter.Render,
@@ -163,14 +165,16 @@ function endDeteccionBasura(ev){
     pares.forEach(par => {
         if(par.bodyA === sensor_ray || par.bodyB === sensor_ray){
             if(bool_active){
-                cant_basura++
+                if(bool_loggedin){
+                    cant_basura++
+                    logMessage('Contador incrementado, valor: '+cant_basura)
+                    updateTrashDisplay()
+                }
                 console.log("Basura detectada", cant_basura)
                 bool_active = false;
                 clearTimeout(timeOut_filled)
                 sensor_ray.render.fillStyle = 'transparent'
                 indicator_detection.style.backgroundColor = '#460606';
-                count_display.innerText = cant_basura
-                logMessage('Contador incrementado, valor: '+cant_basura)
             }
         }
     });
@@ -179,6 +183,10 @@ function endDeteccionBasura(ev){
 function logMessage(message){
     logger.value = logger.value+=`\n>${message}`
     logger.scrollTop = logger.scrollHeight;
+}
+
+function updateTrashDisplay(){
+    count_display.innerText = cant_basura
 }
 
 function iniciarUsuario(ev){
@@ -197,7 +205,7 @@ btnRequestLogin.addEventListener('click',iniciarUsuario)
 
 const clientId = 'mqttjs_' + Math.random().toString(16).substring(2,8);
 
-const host = 'ws://192.168.1.18:8093/mqtt';
+const host = 'ws://192.168.0.81:8083/mqtt';
 
 const options = {
     keepalive: 60,
@@ -231,11 +239,8 @@ client.on('reconnect' , () => {
 client.on('connect', () => {
     console.log('Cliente Listo: ' , clientId);
     // Subscribe
-    client.subscribe('testtopic', {qos: 0});
+    client.subscribe('inicioSesion', {qos: 0});
 });
-
-//Publicando
-client.publish('inicioSesion', 'MENSAJE!!!...!', {qos: 0, retain: false});
 
 // Recibiendo datos
 client.on('message' , (topic, message, packet) => {
@@ -246,20 +251,25 @@ client.on('message' , (topic, message, packet) => {
     console.log('inicio sesion-------')
     if(topic==='inicioSesion'){
         console.log('fn inicioSesion: ', message.toString())
-        response = message.toString();
-        client.publish('inicioSesion','loginValido', {qos: 0, retain: false})
-        if(response==='loginValido'){
+        const response = JSON.parse(message.toString());
+        if(response.data && response.data==='loginValido'){
             logMessage('Aceptado Inicio de sesion')
+            bool_loggedin = true;
             setTimeout(()=>{
+                client.publish('trash_update',JSON.stringify({codigo: userCode, cantidad: cant_basura}), {qos: 0, retain: false})
                 logMessage(`enviando data: ${userCode}, ${cant_basura}`);
                 cant_basura = 0;
+                updateTrashDisplay();
+                bool_loggedin = false;
             },30*1000)
         }
     }
 });
 
 function loginUser(codigoEstudiante){
-    client.publish('inicioSesion', `${codigoEstudiante}`, {qos: 0, retain: false});
+    const tempData = {codigo: codigoEstudiante}
+
+    client.publish('inicioSesion', `${JSON.stringify(tempData)}`, {qos: 0, retain: false});
 }
 
 function sendDataBasura(codigoEstudiante, cant_basura){
